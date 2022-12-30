@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BUS projekt</title>
+</head>
+<body>
+ <div class="container">
+      <h1> Add resource </h1>
+      <br>
+      <form action="" method="post">
+          <h3>Resource name</h3>
+        <input type="text" placeholder="Resource name" name="name">
+          <br>
+        <input class="btn btn-default" type="submit" value="Add resource">
+      </form>
+
+     {% if error %}
+       <strong>Error:</strong> {{ error }}
+      {% endif %}
+
+    </div>
+
+</body>
+</html>

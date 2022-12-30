@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+</head>
+<body>
+<h1> Home page for {{username}} </h1>
+
+<h2> Resources </h2>
+{%for i in range(n) %}
+    <h4>
+        <a href="{{url_for('show_resource',username=username,resource=resources[i].name)}}">{{resources[i].name}}</a>
+    </h4>
+{%endfor%}
+
+
+<h2> <a href="{{url_for('add_resource',username=username)}}">Add resource</a> </h2>
+<h2> Delete resource </h2>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BUS projekt</title>
+</head>
+<body>
+ <div class="container">
+      <h1> Register page</h1>
+      <br>
+      <form action="" method="post">
+        <input type="text" placeholder="Username" name="username">
+          <br>
+          <input type="password" placeholder="Password" name="password" >
+          <br>
+        <input type="password" placeholder="Confirm Password" name="confirm" >
+          <br>
+
+        <input class="btn btn-default" type="submit" value="Register">
+      </form>
+
+     {% if error %}
+       <strong>Error:</strong> {{ error }}
+      {% endif %}
+
+    </div>
+
+</body>
+</html>

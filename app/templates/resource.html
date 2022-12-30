@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BUS</title>
+</head>
+<body>
+<h1> Resource name: {{resource.name}} </h1>
+<h2> Owner: {{owner.username}}</h2>
+
+<h2> Files: </h2>
+{%for i in range(n) %}
+    <h4> > {{files[i].name}} </h4>
+{%endfor%}
+
+ <div class="container">
+      <h1> Add file </h1>
+      <br>
+      <form action="" method="post">
+          <h3>File name</h3>
+        <input type="text" placeholder="File name" name="name">
+          <br>
+          <input type="text" placeholder="File content" name="content">
+          <br>
+        <input class="btn btn-default" type="submit" value="Add file">
+      </form>
+
+     {% if error %}
+       <strong>Error:</strong> {{ error }}
+      {% endif %}
+    </div>
+
+
+
+</body>
+</html>
