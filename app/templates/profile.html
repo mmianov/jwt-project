@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>bootstrap-template</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="{{url_for('static',filename='assets/css/Features-Centered-Icons-icons.css')}}">
+</head>
+<body style="border-width: 0px;border-style: solid;">
+    <nav class="navbar navbar-dark navbar-expand-md sticky-top py-3" id="loggedNav">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="{{url_for('home',username=username)}}"><span class="bs-icon-sm bs-icon-circle bs-icon-primary shadow d-flex justify-content-center align-items-center me-2 bs-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-bezier">
+                        <path fill-rule="evenodd" d="M0 10.5A1.5 1.5 0 0 1 1.5 9h1A1.5 1.5 0 0 1 4 10.5v1A1.5 1.5 0 0 1 2.5 13h-1A1.5 1.5 0 0 1 0 11.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm10.5.5A1.5 1.5 0 0 1 13.5 9h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zM6 4.5A1.5 1.5 0 0 1 7.5 3h1A1.5 1.5 0 0 1 10 4.5v1A1.5 1.5 0 0 1 8.5 7h-1A1.5 1.5 0 0 1 6 5.5v-1zM7.5 4a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"></path>
+                        <path d="M6 4.5H1.866a1 1 0 1 0 0 1h2.668A6.517 6.517 0 0 0 1.814 9H2.5c.123 0 .244.015.358.043a5.517 5.517 0 0 1 3.185-3.185A1.503 1.503 0 0 1 6 5.5v-1zm3.957 1.358A1.5 1.5 0 0 0 10 5.5v-1h4.134a1 1 0 1 1 0 1h-2.668a6.517 6.517 0 0 1 2.72 3.5H13.5c-.123 0-.243.015-.358.043a5.517 5.517 0 0 0-3.185-3.185z"></path>
+                    </svg></span><span><strong>SecureNotes</strong></span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1" style="text-align: center;">
+                <div class="container" style="width: 361.891px;text-align: center;padding-left: 154px;"><a href={{url_for('home',username=username)}} style="text-align: center;font-size: 20px;color: rgb(255,255,255);padding: 16px;"><strong>Home</strong></a><a href={{url_for('resources',username=username)}} style="text-align: center;font-size: 20px;color: rgb(255,255,255);padding: 16px;"><strong>Resources</strong></a><a href="{{url_for('user_profile',username=username)}}" style="text-align: center;font-size: 20px;color: rgb(255,255,255);padding: 16px;"><strong>Profile</strong></a></div>
+                <ul class="navbar-nav mx-auto"></ul><a class="btn btn-primary shadow" role="button" href="{{url_for('logout')}}">Log out</a>
+            </div>
+        </div>
+    </nav>
+    <div class="row d-flex justify-content-center" style="margin-top: 83px;">
+        <div class="col-md-6 col-xl-4">
+            <div class="card">
+                <div class="card-body text-center d-flex flex-column align-items-center" style="margin-top: -4px;">
+                    <div class="bs-icon-xl bs-icon-circle bs-icon-primary shadow bs-icon my-4" style="margin-top: -84px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-person">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"></path>
+                        </svg></div>
+                    <form method="post">
+                        <div class="mb-3"></div>
+                        <div class="mb-3"></div>
+                        <div class="mb-3"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container text-center align-items-center align-content-end m-auto" style="border-width: 2px;border-style: solid;border-radius: 15px;width: 861px;padding-top: 15px;padding-bottom: 15px;">
+        <div class="row m-auto">
+            <div class="col-md-12 d-flex justify-content-center align-items-center align-content-center" style="margin-bottom: 12px;border-radius: 15px;padding: 12px;border-width: 2px;border-style: none;">
+                <h1 class="d-inline-block justify-content-center align-items-center align-content-center" style="text-align: center;margin-right: 8px;"><strong>Username:</strong></h1>
+                <h1 class="d-inline-block justify-content-center align-items-center align-content-center" style="text-align: center;">{{user.username}}</h1>
+            </div>
+        </div>
+        <div class="row d-inline-flex">
+            <div class="col-md-6 d-flex justify-content-center">
+                <h1><strong>My resources</strong></h1>
+            </div>
+            <div class="col-md-6 d-flex justify-content-center">
+                <h1><strong>Shared with me</strong></h1>
+            </div>
+            <div class="col-md-6 d-flex justify-content-center"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-folder" style="font-size: 65px;margin-bottom: 15px;">
+                    <path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z"></path>
+                </svg></div>
+            <div class="col-md-6 d-flex justify-content-center"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-folder-symlink" style="font-size: 65px;margin-bottom: 15px;">
+                    <path d="m11.798 8.271-3.182 1.97c-.27.166-.616-.036-.616-.372V9.1s-2.571-.3-4 2.4c.571-4.8 3.143-4.8 4-4.8v-.769c0-.336.346-.538.616-.371l3.182 1.969c.27.166.27.576 0 .742z"></path>
+                    <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2zm.694 2.09A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09l-.636 7a1 1 0 0 1-.996.91H2.826a1 1 0 0 1-.995-.91l-.637-7zM6.172 2a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672z"></path>
+                </svg></div>
+            <div class="col-md-6 d-flex justify-content-center">
+                <h1>{{owned}}</h1>
+            </div>
+            <div class="col-md-6 col-xxl-6 d-flex justify-content-center">
+                <h1>{{shared}}</h1>
+            </div>
+        </div>
+    </div>
+    <script src="{{url_for('static',filename='assets/bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static',filename='assets/js/bold-and-dark.js')}}"></script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+{%extends "base_logged.html" %}
+
+{% block content %}
+
+    <div class="container" style="text-align: center;display: flex;flex-direction: column;align-items: center;">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 style="text-align: center;padding-bottom: 42px;margin-top: 84px;"><strong>{{resource}}</strong></h1>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="row" style="text-align: center;display: grid;grid-template-columns: 1fr 1fr 1fr;width: 100%;margin-right: 0px;margin-left: 0px;margin: auto;border-style: none;">
+
+
+            {% for i in range(n) %}
+            <div class="col-md-4" style="border-width: 2px;border-style: solid;border-radius: 27px;width: 360px;justify-self: center;padding: 20px 0;margin: 20px 0;">
+                <div class="card">
+                    <div class="card-body" style="text-align: center;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-file-earmark" style="font-size: 58px;text-align: center;padding-bottom: 13px;">
+                            <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"></path>
+                        </svg>
+                        <h4 class="card-title">{{files[i].name}}</h4><a class="btn btn-primary" role="button" style="text-align: center;" href="{{url_for('note_view',username=username,resource=resource,file=files[i].name)}}">Open</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+
+
+<!--            <div class="col-md-4" style="border-width: 2px;border-style: solid;border-radius: 27px;width: 360px;justify-self: center;padding: 20px 0;margin: 20px 0;">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-body" style="text-align: center;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-file-earmark" style="font-size: 58px;text-align: center;padding-bottom: 13px;">-->
+<!--                            <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"></path>-->
+<!--                        </svg>-->
+<!--                        <h4 class="card-title">Note 2 - read</h4><a class="btn btn-primary" role="button" style="text-align: center;" href="note-view-read.html">Open</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+
+<!--            <div class="col-md-4" style="border-width: 2px;border-style: solid;border-radius: 27px;width: 360px;justify-self: center;padding: 20px 0;margin: 20px 0;">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-body" style="text-align: center;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-file-earmark" style="font-size: 58px;text-align: center;padding-bottom: 13px;">-->
+<!--                            <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"></path>-->
+<!--                        </svg>-->
+<!--                        <h4 class="card-title">Note 3</h4><button class="btn btn-primary" type="button" style="text-align: center;">Open</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            -->
+<!--            <div class="col-md-4" style="border-width: 2px;border-style: solid;border-radius: 27px;width: 360px;justify-self: center;padding: 20px 0;margin: 20px 0;">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-body" style="text-align: center;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-file-earmark" style="font-size: 58px;text-align: center;padding-bottom: 13px;">-->
+<!--                            <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"></path>-->
+<!--                        </svg>-->
+<!--                        <h4 class="card-title">Note 4</h4><button class="btn btn-primary" type="button" style="text-align: center;">Open</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+
+        </div>
+    </div>
+    <form method="post">
+    <div class="container" style="margin-top: 48px;">
+        <div class="row" style="margin-top: 71px;/*display: inline-block;*/">
+
+            <div class="col" style="/*display: flex;*//*align-items: center;*/text-align: center;">
+                {% if owner %}
+                <a class="btn btn-primary" role="button" style="text-align: center;margin: 10px;background: var(--bs-purple);border-style: none;" href="{{url_for('manage_users',username=username,resource=resource)}}">Manage users</a>
+                {% endif %}
+                <a class="btn btn-primary" role="button" style="text-align: center;margin: 10px;border-style: none;" href="{{url_for('add_note',username=username,resource=resource)}}">Add note</a>
+                 {% if owner %}
+                <button class="btn btn-primary" formmethod="post" type="submit" style="text-align: center;margin: 10px;background: var(--bs-red);border-style: none;">Delete resource</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    </form>
+
+{% endblock %}

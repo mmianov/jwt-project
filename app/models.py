@@ -43,6 +43,7 @@ class Resource(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     owner_id = Column(Integer, ForeignKey('users.id'))
+
     #owner = relationship('User', back_populates='username')
 
     all_files = relationship('File', back_populates='resource')
@@ -55,7 +56,7 @@ class File(db.Model):
     __tablename__ = 'files'
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    #content = Column(String,nullable=True)
+    content = Column(String)
     resource_id = Column(Integer, ForeignKey('resources.id'))
     resource = relationship('Resource', back_populates='all_files')
 

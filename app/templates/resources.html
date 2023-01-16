@@ -1,0 +1,84 @@
+{%extends "base_logged.html" %}
+
+{% block content %}
+    <div class="container" style="text-align: center;display: flex;flex-direction: column;align-items: center;">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h1 style="text-align: center;padding-bottom: 42px;margin-top: 84px;"><strong>Your resources</strong></h1>
+            </div>
+        </div>
+
+        <div class="row" style="text-align: center;display: grid;grid-template-columns: 1fr 1fr 1fr;width: 100%;margin-right: 0px;margin-left: 0px;margin: auto;">
+
+        {% for i in range(n) %}
+            <div class="col-md-4" style="border-width: 2px;border-style: solid;border-radius: 27px;width: 360px;justify-self: center;padding: 20px 0;margin: 20px 0;">
+                <div class="card">
+                    <div class="card-body" style="text-align: center;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-folder" style="font-size: 58px;text-align: center;">
+                            <path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z"></path>
+                        </svg>
+                        <h4 class="card-title">{{my_resources[i].name}}</h4><a class="btn btn-primary" role="button" style="text-align: center;" href="{{url_for('resource_view',username=username,resource=my_resources[i].name)}}">Open</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+
+             {% if n==0 %}
+            <div class="row" style="text-align: center;display: grid;grid-template-columns: 1fr 1fr 1fr;width: 100%;margin-right: 0px;margin-left: 0px;margin: auto;">
+             <div class="col-md-4" style="border-width: 2px;border-style: solid;border-radius: 27px;width: 360px;justify-self: center;padding: 20px 0;margin: 20px 0;">
+                <div class="card">
+                    <div class="card-body" style="text-align: center;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-folder" style="font-size: 58px;text-align: center;">
+                            <path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z"></path>
+                        </svg>
+                        <h4 class="card-title">No resources available </h4>
+                    </div>
+                </div>
+            </div>
+              {% endif %}
+
+
+
+        </div>
+    </div>
+
+
+    <div class="container" style="text-align: center;display: flex;flex-direction: column;align-items: center;">
+        <div class="row">
+            <div class="col-md-12"><a class="btn btn-primary" role="button" style="background: var(--bs-purple);border-style: none;" href="{{url_for('add_resource',username=username)}}">Add resource</a>
+                <h1 style="text-align: center;padding-bottom: 42px;margin-top: 54px;"><strong>Shared with you</strong></h1>
+            </div>
+        </div>
+
+
+          <div class="row" style="text-align: center;display: grid;grid-template-columns: 1fr 1fr 1fr;width: 100%;margin-right: 0px;margin-left: 0px;margin: auto;">
+         {% for i in range(m) %}
+            <div class="col-md-4" style="border-width: 2px;border-style: solid;border-radius: 27px;width: 360px;justify-self: center;padding: 20px 0;margin: 20px 0;">
+                <div class="card">
+                    <div class="card-body" style="text-align: center;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-folder" style="font-size: 58px;text-align: center;">
+                            <path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z"></path>
+                        </svg>
+                        <h4 class="card-title">{{shared_resources[i].name}}</h4><a class="btn btn-primary" role="button" style="text-align: center;" href="{{url_for('resource_view',username=shared_users[i].username,resource=shared_resources[i].name)}}">Open</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+              {% if m==0 %}
+                  <div class="row" style="text-align: center;display: grid;grid-template-columns: 1fr 1fr 1fr;width: 100%;margin-right: 0px;margin-left: 0px;margin: auto;">
+            <div class="col-md-4" style="border-width: 2px;border-style: solid;border-radius: 27px;width: 360px;justify-self: center;padding: 20px 0;margin: 20px 0">
+                <div class="card">
+                    <div class="card-body" style="text-align: center;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-folder" style="font-size: 58px;text-align: center;">
+                            <path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z"></path>
+                        </svg>
+                        <h4 class="card-title">No resources available </h4>
+                    </div>
+                </div>
+            </div>
+              {% endif %}
+
+         </div>
+    </div>
+
+
+{% endblock %}
