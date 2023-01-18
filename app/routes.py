@@ -6,7 +6,7 @@ from flask import render_template, redirect, request, url_for, make_response, se
 from app.db import user_exists, add_user_to_database, verify_login, add_user_resource, resource_exists, get_resources,\
 get_single_resource, get_resource_owner, get_resource_files,add_single_file,get_shared_resources,get_resource_users,\
 get_all_users, add_user_to_resource, delete_user_from_resource, delete_resource, add_note_to_resource, get_note,\
-update_note, delete_note, get_user, get_user_by_id, is_user, is_owner, is_in_resource, is_write, is_read
+update_note, delete_note, get_user, get_user_by_id, is_user, is_owner, is_in_resource, is_write, is_read,file_exists
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import set_access_cookies
@@ -14,22 +14,6 @@ from flask_jwt_extended import unset_jwt_cookies
 from flask_jwt_extended import decode_token
 
 
-
-# TODO: change username route parameter so that it is taken from JWT token and not from route
-
-# def encode_jwt(user_id):
-#     try:
-#         payload = {
-#             'user_id':user_id,
-#             'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=1200),
-#             'iat': datetime.datetime.utcnow(),
-#         }
-#         return jwt.encode(
-#             payload,
-#             app.config.get('SECRET_KEY'),
-#             algorithm='HS256')
-#     except:
-#         return False
 
 
 def token_required(f):
@@ -114,21 +98,24 @@ def register():
 @token_required
 def home(current_user, username):
     if not is_user(current_user.id, username):
-        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username), 403
+        nav_user = get_user_by_id(current_user.id).username
+        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username,nav_user=nav_user), 403
 
     resources = get_resources(username)
     print(resources)
-    return render_template('home_boot.html', username=username, resources=resources)
+    nav_user = get_user_by_id(current_user.id).username
+    return render_template('home_boot.html', username=username, resources=resources,nav_user=nav_user)
 
 
 @app.route('/<username>/resources', methods=['GET'])
 @token_required
 def resources(current_user, username):
+    nav_user = get_user_by_id(current_user.id).username
     if not user_exists(username):
-        return render_template('error-permission.html', error="Page not found",username=username), 404
+        return render_template('error-permission.html', error="Page not found",username=username,nav_user=nav_user), 404
 
     if not is_user(current_user.id, username):
-        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username), 403
+        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username,nav_user=nav_user), 403
 
     my_resources = get_resources(username)
     shared_resources = get_shared_resources(username)
@@ -139,20 +126,27 @@ def resources(current_user, username):
     print(shared_users)
     return render_template('resources.html', username=username, my_resources=my_resources,
                            shared_resources=shared_resources,shared_users=shared_users,
-                           n=len(my_resources),m=len(shared_resources))
+                           n=len(my_resources),m=len(shared_resources),nav_user=nav_user)
 
 
 @app.route('/<username>/<resource>', methods=['GET','POST'])
 @token_required
 def resource_view(current_user, username,resource):
+    nav_user = get_user_by_id(current_user.id).username
+
     if not user_exists(username):
-        return render_template('error-permission.html', error="Page not found",username=username), 404
+        return render_template('error-permission.html', error="Page not found",username=username,nav_user=nav_user), 404
+
+    if get_single_resource(username,resource) is None:
+        return render_template('error-permission.html', error="Page not found",
+                               username=username, nav_user=nav_user), 404
 
     owner = is_owner(current_user.id,username, resource)
     collab = is_in_resource(current_user, username, resource)
+    write = is_write(current_user, username, resource)
 
     if not owner and not collab:
-        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username), 403
+        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username,nav_user=nav_user), 403
 
     if request.method == 'POST' and owner:
         # delete resource
@@ -161,18 +155,19 @@ def resource_view(current_user, username,resource):
     else:
         files = get_resource_files(username, resource)
         return render_template('resource-view.html', username=username, resource=resource, files=files, n=len(files),
-                               owner=owner)
+                               owner=owner,write=write,nav_user=nav_user)
 
 
 @app.route('/<username>/add_resource', methods=['GET','POST'])
 @token_required
 def add_resource(current_user, username):
+    nav_user = get_user_by_id(current_user.id).username
     error = None
     if not user_exists(username):
-        return render_template('error-permission.html', error="Page not found",username=username), 404
+        return render_template('error-permission.html', error="Page not found",username=username,nav_user=nav_user), 404
 
     if not is_user(current_user.id, username):
-        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username), 403
+        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username,nav_user=nav_user), 403
 
     if request.method == 'POST':
         if request.form['name'] == '':
@@ -189,32 +184,42 @@ def add_resource(current_user, username):
 @app.route('/<username>/<resource>/users', methods=['GET','POST'])
 @token_required
 def manage_users(current_user, username, resource):
+    nav_user = get_user_by_id(current_user.id).username
     if not user_exists(username):
-        return render_template('error-permission.html', error="Page not found",username=username), 404
+        return render_template('error-permission.html', error="Page not found",username=username,nav_user=nav_user), 404
+
+    if get_single_resource(username, resource) is None:
+        return render_template('error-permission.html', error="Page not found",
+                               username=username, nav_user=nav_user), 404
 
     if not is_owner(current_user.id, username, resource):
-        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username), 403
+        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username,nav_user=nav_user), 403
 
     if request.method == 'POST':
         deleted_user = request.form['user']
         delete_user_from_resource(username, resource, deleted_user)
         # get new list of resource users
         users = get_resource_users(username, resource)
-        return render_template('users.html', users=users, username=username, resource=resource, n=len(users))
+        return render_template('users.html', users=users, username=username, resource=resource, n=len(users),nav_user=nav_user)
     else:
         users = get_resource_users(username, resource)
-        return render_template('users.html', users=users, username=username, resource=resource, n=len(users))
+        return render_template('users.html', users=users, username=username, resource=resource, n=len(users),nav_user=nav_user)
 
 
 @app.route('/<username>/<resource>/add_user', methods=['GET','POST'])
 @token_required
 def add_user(current_user, username, resource):
+    nav_user = get_user_by_id(current_user.id).username
     error = None
     if not user_exists(username):
-        return render_template('error-permission.html', error="Page not found",username=username), 404
+        return render_template('error-permission.html', error="Page not found",username=username,nav_user=nav_user), 404
+
+    if get_single_resource(username, resource) is None:
+        return render_template('error-permission.html', error="Page not found",
+                               username=username, nav_user=nav_user), 404
 
     if not is_owner(current_user.id, username, resource):
-        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username), 403
+        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username,nav_user=nav_user), 403
 
     users = get_all_users(username)
 
@@ -230,24 +235,29 @@ def add_user(current_user, username, resource):
 
         if not add_user_to_resource(username, resource, user, read_only):
             error = "User already in resource."
-            return render_template('add-user.html', users=users, username=username, resource=resource, n=len(users), error=error)
+            return render_template('add-user.html', users=users, username=username, resource=resource, n=len(users), error=error,nav_user=nav_user)
         # get newly added user and render user management
         users = get_resource_users(username, resource)
         return redirect(url_for('manage_users', users=users, username=username, resource=resource, n=len(users)))
     else:
-        return render_template('add-user.html',users=users, username=username,resource=resource,n=len(users))
+        return render_template('add-user.html',users=users, username=username,resource=resource,n=len(users),nav_user=nav_user)
 
 
 
 @app.route('/<username>/<resource>/add_note', methods=['GET','POST'])
 @token_required
 def add_note(current_user, username, resource):
+    nav_user = get_user_by_id(current_user.id).username
     error = None
     if not user_exists(username):
-        return render_template('error-permission.html', error="Page not found",username=username), 404
+        return render_template('error-permission.html', error="Page not found",username=username,nav_user=nav_user), 404
+
+    if get_single_resource(username, resource) is None:
+        return render_template('error-permission.html', error="Page not found",
+                               username=username, nav_user=nav_user), 404
 
     if not is_write(current_user, username, resource):
-        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username), 403
+        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username,nav_user=nav_user), 403
 
     if request.method == 'POST':
         note_name = request.form['name']
@@ -256,21 +266,31 @@ def add_note(current_user, username, resource):
 
         if note_name == '' or content == '':
             error = "Please fill out the fields"
-            return render_template('add-note.html', username=username, resource=resource, error=error)
+            return render_template('add-note.html', username=username, resource=resource, error=error,nav_user=nav_user)
 
         add_note_to_resource(username, resource,note_name, content)
         files = get_resource_files(username, resource)
-        return redirect(url_for('resource_view', username=username, resource=resource))
+        return redirect(url_for('resource_view', username=username, resource=resource,nav_user=nav_user))
     else:
-        return render_template('add-note.html',username=username, resource=resource)
+        return render_template('add-note.html',username=username, resource=resource,nav_user=nav_user)
 
 
 @app.route('/<username>/<resource>/<file>', methods=['GET','POST'])
 @token_required
 def note_view(current_user, username, resource,file):
+    nav_user = get_user_by_id(current_user.id).username
     error = None
     if not user_exists(username):
-        return render_template('error-permission.html', error="Page not found",username=username), 404
+        return render_template('error-permission.html', error="Page not found",username=username,nav_user=nav_user), 404
+
+    if get_single_resource(username, resource) is None:
+        return render_template('error-permission.html', error="Page not found",
+                               username=username, nav_user=nav_user), 404
+
+    # check if note exists
+    if not file_exists(username,resource,file):
+        return render_template('error-permission.html', error="Page not found", username=username,
+                               nav_user=nav_user), 404
 
     write = is_write(current_user, username, resource)
     read =  is_read(current_user, username, resource)
@@ -278,7 +298,7 @@ def note_view(current_user, username, resource,file):
     print("Read: " + str(read))
 
     if not write and not read:
-        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username), 403
+        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username,nav_user=nav_user), 403
 
     readonly = (not write)
 
@@ -292,7 +312,7 @@ def note_view(current_user, username, resource,file):
             # update values in the database
             update_note(note.id, name, content)
             # return to resource view
-            return redirect(url_for('resource_view', username=username, resource=resource, read=readonly))
+            return redirect(url_for('resource_view', username=username, resource=resource, read=readonly,nav_user=nav_user))
 
         elif request.form['button'] == 'download':
             name = request.form['name']
@@ -308,32 +328,33 @@ def note_view(current_user, username, resource,file):
             # delete note
             delete_note(note.id)
             # return to resource view
-            return redirect(url_for('resource_view', username=username, resource=resource))
+            return redirect(url_for('resource_view', username=username, resource=resource,nav_user=nav_user))
 
         note = get_note(username, resource, file)
-        return render_template('note-view.html', username=username, resource=resource, note=note, file=file, error=error, read=readonly)
+        return render_template('note-view.html', username=username, resource=resource, note=note, file=file, error=error, read=readonly,nav_user=nav_user)
 
     else:
         note = get_note(username, resource, file)
         return render_template('note-view.html', username=username, resource=resource, note=note, file=file, error=error,
-                               read=readonly)
+                               read=readonly,nav_user=nav_user)
 
 
 
 @app.route('/<username>/profile', methods=['GET'])
 @token_required
 def user_profile(current_user, username):
+    nav_user = get_user_by_id(current_user.id).username
     if not user_exists(username):
-        return render_template('error-permission.html', error="Page not found",username=username), 404
+        return render_template('error-permission.html', error="Page not found",username=username,nav_user=nav_user), 404
 
     if not is_user(current_user.id, username):
-        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username), 403
+        return render_template('error-permission.html', error="You are not authorized to perform this action.",username=username,nav_user=nav_user), 403
 
     user = get_user(username)
     my_res = get_resources(username)
     shared_res = get_shared_resources(username)
 
-    return render_template('profile.html', user=user, username=username, owned=len(my_res), shared=len(shared_res))
+    return render_template('profile.html', user=user, username=username, owned=len(my_res), shared=len(shared_res),nav_user=nav_user)
 
 
 @app.route('/logout', methods=['GET'])
@@ -342,6 +363,11 @@ def logout(current_user):
     resp = redirect(url_for('index'))
     unset_jwt_cookies(resp)
     return resp
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error-permission.html', error="Page not found"),404
 
 
 

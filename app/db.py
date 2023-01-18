@@ -314,8 +314,15 @@ def is_read(actual_user, username, resource):
     return False
 
 
-
-
+def file_exists(username, resource,filename):
+    # get username and user_id
+    user = User.query.filter_by(username=username).first()
+    # get resource with the name <resource> AND owned by user_id
+    res = Resource.query.filter_by(name=resource, owner_id=user.id).first()
+    for f in res.all_files:
+        if f.name == filename:
+            return True
+    return False
 
 
 

@@ -72,7 +72,9 @@
                 {% if owner %}
                 <a class="btn btn-primary" role="button" style="text-align: center;margin: 10px;background: var(--bs-purple);border-style: none;" href="{{url_for('manage_users',username=username,resource=resource)}}">Manage users</a>
                 {% endif %}
+                {% if write %}
                 <a class="btn btn-primary" role="button" style="text-align: center;margin: 10px;border-style: none;" href="{{url_for('add_note',username=username,resource=resource)}}">Add note</a>
+                {% endif %}
                  {% if owner %}
                 <button class="btn btn-primary" formmethod="post" type="submit" style="text-align: center;margin: 10px;background: var(--bs-red);border-style: none;">Delete resource</button>
                 {% endif %}
